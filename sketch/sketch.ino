@@ -44,21 +44,18 @@
 #define IR_B12    0xF76897  // 
 #define IR_SMOOTH 0xF7E817  // 
 
-#define Switch 2 // Tranistor Pin
+#define Switch 2 // NPN Switch an Pin 2 for disable Servo to avoid jiggering
 
 //SET TIMER:        // Set yout wakeup time 
-//Std:
-#define ALstd 17     // hour
-// Min:
-#define ALmin 6     // minute
-// Sec: 
+#define ALstd 21    // hour
+#define ALmin 30    // minute
 #define ALsec 0     // second 
 
 
 
 RTClib RTC;
 IRsend irsend;
-Servo myservo;  // create servo object to control a servo
+Servo myservo;      // create servo object to control a servo
 
 
 void setup()
@@ -72,34 +69,35 @@ void setup()
   Serial.begin(57600);
   Wire.begin();
   sunrise(IR_ON);               // Init Led Stripe
-  sunrise(IR_W);
-  dimmPlus();
-  sunrise(IR_OFF);
+  sunrise(IR_W);                // set start Color in white
+  dimmPlus();                   // set  brightness to max
+  sunrise(IR_OFF);              // set chain of lights offline
 
 }
 
 void loop() {
-  timer(0, IR_ON); // Set LED ONLINE
-  timer(0, IR_R); // Set first Color
-  timer(2, IR_B1); // Set next Color after SNOOZE
-  timer(4, IR_B4); // Set next Color after SNOOZE
-  timer(6, IR_B7); // Set next Color after SNOOZE
-  timer(8, IR_B10); // Set next Color after SNOOZE
-  timer(10, IR_G); // Set next Color after SNOOZE
-  timer(12, IR_B2); // Set next Color after SNOOZE
-  timer(14, IR_B5); // Set next Color after SNOOZE
-  timer(16, IR_B8); // Set next Color after SNOOZE
-  timer(18, IR_B11); // Set next Color after SNOOZE
-  timer(20, IR_W); // Set next Color after SNOOZE
-  timer(22, IR_W); // Set next Color after SNOOZE
+  timer(0, IR_ON);    // Set LED ONLINE
+  timer(0, IR_R);     // Set first Color
+  
+  timer(2, IR_B1);    // Set next Color after SNOOZE
+  timer(4, IR_B4);    // Set next Color after SNOOZE
+  timer(6, IR_B7);    // Set next Color after SNOOZE
+  timer(8, IR_B10);   // Set next Color after SNOOZE
+  timer(10, IR_G);    // Set next Color after SNOOZE
+  timer(12, IR_B2);   // Set next Color after SNOOZE
+  timer(14, IR_B5);   // Set next Color after SNOOZE
+  timer(16, IR_B8);   // Set next Color after SNOOZE
+  timer(18, IR_B11);  // Set next Color after SNOOZE
+  timer(20, IR_W);    // Set next Color after SNOOZE
+  timer(22, IR_W);    // Set next Color after SNOOZE
 }
 
 void timer(int snoozer, float irCode) {
-  DateTime now = RTC.now(); // hole Zeit, wenn Alarmzeit, dann führe sunris code aus
+  DateTime now = RTC.now(); // get actual Time, if matches, than do sunris code 
   if ( ((now.hour() == ALstd) && (now.minute() == (ALmin + (0))) && (now.second() == (ALsec + (snoozer)) )) == true ) {
     Serial.println("ZEIT treffer ");
     sunrise(irCode);
-    if (snoozer == 22) {
+    if (snoozer == 22) {  // snoozer is 22 form loop
       getCoffe(); // trigger buttons to get Senseo-Coffe
       lastchance();
     }
@@ -131,7 +129,7 @@ void lastchance() {
 void sunrise(float irCode) {    //basic function for sending code to stripe 3 times
   for (int i = 0; i < 4; i++) {
     irsend.sendNEC(irCode, 32);
-    Serial.println("TRANS1 NEC: IR ");
+    Serial.println("TRANS1 NEC: IR (sunrise code)");
     delay(50);
   }
 }
@@ -155,9 +153,12 @@ void dimmMinus() {    // dim bedim Button
 
 void getCoffe() {       // Program for coffe
   Serial.println("Make Coffe now :)");
+  Serial.println("Bail water... ");
   buttonCM();
   delay(110000);        // wait 110000 microsec to boil water
   buttonGet2Cup();      // move servo to get coffe
+  Serial.println("Hit coffe button");
+  Serial.println("Coffe is comming soon.......");
 }
 
 
