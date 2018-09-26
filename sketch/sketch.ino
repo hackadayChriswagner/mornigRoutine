@@ -1,4 +1,11 @@
 /*
+ * mornigRoutine: Sketch drive CoffeMachine and remote 
+ * string of lights with IR Led and DS3231 Module.
+ * Version 0.2 Aeptember, 2018
+ * Copyright 2009 Chris Wertip
+ */
+
+/*
  * USE:
    IRremote: IRsendDemo - demonstrates sending IR codes with IRsend
    An IR LED must be connected to Arduino PWM pin 3.
@@ -37,7 +44,7 @@
 #define IR_B12    0xF76897  // 
 #define IR_SMOOTH 0xF7E817  // 
 
-#define Switch 2 // Witsch Pin Tranistor
+#define Switch 2 // Tranistor Pin
 
 //SET TIMER:        // Zeit hier einstellen / Alarm einstellen
 //Std:
