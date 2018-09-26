@@ -1,7 +1,7 @@
 /*
  * mornigRoutine: Sketch drive CoffeMachine and remote 
  * string of lights with IR Led and DS3231 Module.
- * Version 0.2 Aeptember, 2018
+ * Version 0.2 September, 2018
  * Copyright 2009 Chris Wertip
  */
 
