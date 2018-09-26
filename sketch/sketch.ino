@@ -46,13 +46,13 @@
 
 #define Switch 2 // Tranistor Pin
 
-//SET TIMER:        // Zeit hier einstellen / Alarm einstellen
+//SET TIMER:        // Set yout wakeup time 
 //Std:
-#define ALstd 9  // 
+#define ALstd 17     // hour
 // Min:
-#define ALmin 0  //
-// Sec:
-#define ALsec 0  //
+#define ALmin 6     // minute
+// Sec: 
+#define ALsec 0     // second 
 
 
 
@@ -63,15 +63,15 @@ Servo myservo;  // create servo object to control a servo
 
 void setup()
 {
-  pinMode(Switch, OUTPUT);     // Pin for Transistor Switch
+  pinMode(Switch, OUTPUT);      // Pin for Transistor Switch
   digitalWrite(Switch, HIGH);   // Set Pin 2 to HIGH go get def Position
-  myservo.attach(11);  // attaches the servo on pin 9 to the servo object
-  myservo.write(40);      // get Servo in define start position
+  myservo.attach(11);           // attaches the servo on pin 9 to the servo object
+  myservo.write(40);            // get Servo in define start position
   delay(500);
-  digitalWrite(Switch, LOW);   // Set Pin 0 to LOW to disable Servo jiggering
+  digitalWrite(Switch, LOW);    // Set Pin 0 to LOW to disable Servo jiggering
   Serial.begin(57600);
   Wire.begin();
-  sunrise(IR_ON);         // Init Led Stripe
+  sunrise(IR_ON);               // Init Led Stripe
   sunrise(IR_W);
   dimmPlus();
   sunrise(IR_OFF);
@@ -136,7 +136,7 @@ void sunrise(float irCode) {    //basic function for sending code to stripe 3 ti
   }
 }
 
-void dimmPlus() {   // dim pos Led
+void dimmPlus() {   // dim lighten Button
   for (int i = 0; i < 13; i++) {
     sunrise(IR_BPLUS);
     Serial.println("Plus");
@@ -144,7 +144,7 @@ void dimmPlus() {   // dim pos Led
   }
 }
 
-void dimmMinus() {    // dim neg Led
+void dimmMinus() {    // dim bedim Button
   for (int i = 0; i < 13; i++) {
     sunrise(IR_BMINUS);
     Serial.println("Minus");
@@ -156,8 +156,8 @@ void dimmMinus() {    // dim neg Led
 void getCoffe() {       // Program for coffe
   Serial.println("Make Coffe now :)");
   buttonCM();
-  delay(110000);    //wait 110000 microsek=
-  buttonGet2Cup();
+  delay(110000);        // wait 110000 microsec to boil water
+  buttonGet2Cup();      // move servo to get coffe
 }
 
 
